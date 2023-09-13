@@ -1,7 +1,8 @@
 import NextAuthProvider from "@/components/providers/NextAuthProvider"
-import "../styles/globals.css"
+import Navbar from "@/components/Navbar"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import "../styles/globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,7 +19,12 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <NextAuthProvider>{children}</NextAuthProvider>
+                <NextAuthProvider>
+                    <div className="flex flex-col min-h-screen">
+                        <Navbar />
+                        {children}
+                    </div>
+                </NextAuthProvider>
             </body>
         </html>
     )
