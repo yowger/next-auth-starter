@@ -29,11 +29,11 @@ export const userFormLoginSchema = z.object({
     password: passwordSchema,
 })
 
-export const userTypeRegisterSchema = userSchema
+export const userRegisterSchema = userSchema
     .extend({
         password: passwordSchema,
     })
-    .merge(hasUserIdSchema)
+    // .merge(hasUserIdSchema)
 
 export const userFormRegisterSchema = userSchema
     .extend({
