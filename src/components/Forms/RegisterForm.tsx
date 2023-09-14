@@ -1,8 +1,9 @@
 "use client"
 
+import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -14,31 +15,22 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-
-/*
-    Todo: make schema file
-*/
-
-const formSchema = z.object({
-    name: z.string(),
-    email: z.string(),
-    password: z.string(),
-})
+import { userFormRegisterSchema } from "@/schemas/userSchema"
 
 export default function RegisterForm() {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof userFormRegisterSchema>>({
+        resolver: zodResolver(userFormRegisterSchema),
     })
 
-    const onSubmit = () => {
-        console.log("form submitted")
+    const onSubmit = (data: z.infer<typeof userFormRegisterSchema>) => {
+        console.log("form submitted ", data)
     }
 
     return (
         <Form {...form}>
             <h1 className="mb-5 text-xl">Register</h1>
 
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                     control={form.control}
                     name="name"
@@ -72,13 +64,32 @@ export default function RegisterForm() {
                         <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                                <Input {...field} />
+                                <Input type="password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Confirm Password</FormLabel>
+                            <FormControl>
+                                <Input type="password" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
                 <Button type="submit">Sign up</Button>
+                <p>
+                    Already have an account{" "}
+                    <Link href="/login" className="text-blue-800">
+                        Login
+                    </Link>
+                </p>
             </form>
         </Form>
     )
