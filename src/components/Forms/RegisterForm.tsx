@@ -15,15 +15,18 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { userFormRegisterSchema } from "@/schemas/userSchema"
+import {
+    userFormRegisterSchema,
+    userTypeRegisterSchema,
+} from "@/schemas/userSchema"
 
 export default function RegisterForm() {
-    const form = useForm<z.infer<typeof userFormRegisterSchema>>({
+    const form = useForm<z.infer<typeof userTypeRegisterSchema>>({
         resolver: zodResolver(userFormRegisterSchema),
     })
 
-    const onSubmit = (data: z.infer<typeof userFormRegisterSchema>) => {
-        console.log("form submitted ", data)
+    const onSubmit = (data: z.infer<typeof userTypeRegisterSchema>) => {
+        console.log("form submitted ")
     }
 
     return (

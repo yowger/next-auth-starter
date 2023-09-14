@@ -15,6 +15,10 @@ const passwordSchema = z
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
 const confirmPasswordSchema = z.string()
 
+const hasUserIdSchema = z.object({
+    id: z.number().int().positive(),
+})
+
 const userSchema = z.object({
     name: nameSchema,
     email: emailSchema,
@@ -24,6 +28,12 @@ export const userFormLoginSchema = z.object({
     email: emailSchema,
     password: passwordSchema,
 })
+
+export const userTypeRegisterSchema = userSchema
+    .extend({
+        password: passwordSchema,
+    })
+    .merge(hasUserIdSchema)
 
 export const userFormRegisterSchema = userSchema
     .extend({
