@@ -1,18 +1,13 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import bcrypt from "bcrypt"
-import { userRegisterSchema } from "@/schemas/userSchema"
 import { z } from "zod"
-
-interface RequestBody {
-    name: string
-    email: string
-    password: string
-}
+import { UserRegister, userRegisterSchema } from "@/schemas/userSchema"
 
 export async function POST(request: Request) {
     try {
-        const body: RequestBody = await request.json()
+        const body: UserRegister = await request.json()
+
         const result = userRegisterSchema.parse(body)
         const { name, email, password } = result
 
@@ -39,7 +34,7 @@ export async function POST(request: Request) {
             },
         })
 
-        const { password: _password, ...userWithoutPassword } = user
+        const { password: createdPassword, ...userWithoutPassword } = user
 
         return NextResponse.json({ user: userWithoutPassword }, { status: 201 })
     } catch (error) {

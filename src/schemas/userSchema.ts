@@ -29,11 +29,9 @@ export const userFormLoginSchema = z.object({
     password: passwordSchema,
 })
 
-export const userRegisterSchema = userSchema
-    .extend({
-        password: passwordSchema,
-    })
-    // .merge(hasUserIdSchema)
+export const userRegisterSchema = userSchema.extend({
+    password: passwordSchema,
+})
 
 export const userFormRegisterSchema = userSchema
     .extend({
@@ -44,3 +42,5 @@ export const userFormRegisterSchema = userSchema
         path: ["confirmPassword"],
         message: "Passwords do not match",
     })
+
+export type UserRegister = z.infer<typeof userRegisterSchema>
