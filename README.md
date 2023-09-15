@@ -35,16 +35,18 @@ Get user information by their unique ID.
 -   `200 OK` - Successful retrieval with user data.
 
     ```json
-    user: {
-        "id": 1,
-        "name": "John Doe",
-        "email": "john@example.com"
+    {
+        "user": {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com"
+        }
     }
     ```
 
 -   `404 OK` - Successful retrieval with user data.
     ```json
-    user: {
+    {
         "error": "User not found"
     }
     ```
@@ -63,23 +65,23 @@ Register a new user.
 
 **Request Body**
 
-    ```json
     {
     "name": "Alice",
     "email": "alice@example.com",
     "password": "securePassword"
     }
-    ```
 
 **Responses**
 
 -   `200 OK` - Successful retrieval with user data.
 
     ```json
-    user: {
-        "id": 1,
-        "name": "John Doe",
-        "email": "john@example.com"
+    {
+        "user:": {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com"
+        }
     }
     ```
 
