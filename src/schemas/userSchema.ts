@@ -43,4 +43,7 @@ export const userFormRegisterSchema = userSchema
         message: "Passwords do not match",
     })
 
+export const userWithIdSchema = userSchema.merge(hasUserIdSchema)
+
+export type userWithId = z.infer<typeof userWithIdSchema>
 export type UserRegister = z.infer<typeof userRegisterSchema>

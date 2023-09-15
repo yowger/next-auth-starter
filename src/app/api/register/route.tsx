@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import bcrypt from "bcrypt"
-import { z } from "zod"
-import { UserRegister, userRegisterSchema } from "@/schemas/userSchema"
+import { userRegisterSchema } from "@/schemas/userSchema"
+import type { UserRegister } from "@/schemas/userSchema"
 import { zodCustomError } from "@/lib/zodCustomError"
 
 export async function POST(request: Request) {
