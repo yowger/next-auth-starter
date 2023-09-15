@@ -23,7 +23,10 @@ export async function GET(request: Request, { params: { id } }: Props) {
         })
 
         if (!user) {
-            return NextResponse.json({ user: null }, { status: 404 })
+            return NextResponse.json(
+                { error: "User not Found" },
+                { status: 404 }
+            )
         }
 
         const parsedUser = userWithIdSchema.parse(user)

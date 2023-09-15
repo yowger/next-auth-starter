@@ -4,17 +4,19 @@ Starter code for future projects, It handles most authorization so you can start
 
 tech: Next.js, postgres with prisma, typescript
 
-#will update read me soon
+# API Endpoints
 
-# API endpoints
+## Login
 
-## GET
+### GET
 
-`official client only` [/api/users/:id](#get-apiusersid) <br/>
+-   [/api/users/:id](#get-apiusersid)
 
-## POST
+## Register
 
-`official client only` [/api/users](#post-apiusers) <br/>
+### POST
+
+-   [/api/register](#post-apiregister)
 
 ---
 
@@ -31,10 +33,54 @@ Get user information by their unique ID.
 **Responses**
 
 -   `200 OK` - Successful retrieval with user data.
+
     ```json
-    {
+    user: {
         "id": 1,
         "name": "John Doe",
         "email": "john@example.com"
     }
     ```
+
+-   `404 OK` - Successful retrieval with user data.
+    ```json
+    user: {
+        "error": "User not found"
+    }
+    ```
+
+---
+
+### POST /api/register
+
+Register a new user.
+
+**Parameters**
+
+| Name | Required |  Type  | Description                        |
+| ---- | :------: | :----: | ---------------------------------- |
+| `id` | required | number | The unique identifier of the user. |
+
+**Request Body**
+
+    ```json
+    {
+    "name": "Alice",
+    "email": "alice@example.com",
+    "password": "securePassword"
+    }
+    ```
+
+**Responses**
+
+-   `200 OK` - Successful retrieval with user data.
+
+    ```json
+    user: {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com"
+    }
+    ```
+
+---
