@@ -1,10 +1,10 @@
-import RegisterForm from "@/components/forms/RegisterForm"
+import SignUpForm from "@/components/forms/SignUpForm"
 
 export default function Register() {
     return (
         <>
             <div className="max-w-md w-full p-4">
-                <RegisterForm />
+                <SignUpForm />
             </div>
         </>
     )

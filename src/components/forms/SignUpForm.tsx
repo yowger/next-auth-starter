@@ -1,8 +1,8 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { userFormRegisterSchema } from "@/schemas/userSchema"
@@ -19,17 +19,19 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 
-export default function RegisterForm() {
+export default function SignUpForm() {
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
 
     const form = useForm<userFormRegister>({
         resolver: zodResolver(userFormRegisterSchema),
     })
 
     const onSubmit = async (data: userFormRegister) => {
+        setLoading(true)
         const { name, email, password } = data
 
-        const response = await fetch("/api/register", {
+        const response = await fetch("/api/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "Application/json",
@@ -41,6 +43,8 @@ export default function RegisterForm() {
             }),
         })
 
+        setLoading(false)
+
         if (response.ok) {
             router.push("/login")
         } else {
@@ -50,7 +54,7 @@ export default function RegisterForm() {
 
     return (
         <Form {...form}>
-            <h1 className="mb-5 text-xl">Register</h1>
+            <h1 className="mb-5 text-xl">Sign Up</h1>
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -105,11 +109,13 @@ export default function RegisterForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Sign up</Button>
+                <Button disabled={loading} type="submit">
+                    {loading ? "Loading..." : "Sign Up"}
+                </Button>
                 <p>
                     Already have an account{" "}
-                    <Link href="/login" className="text-blue-800">
-                        Login
+                    <Link href="/signin" className="text-blue-800">
+                        Sign in
                     </Link>
                 </p>
             </form>

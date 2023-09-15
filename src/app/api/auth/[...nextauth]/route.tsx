@@ -14,7 +14,7 @@ export const authOptions = {
             },
             async authorize(credentials) {
                 const fetchUserResults = await fetch(
-                    "http://localhost:3000/api/login",
+                    "http://localhost:3000/api/signin",
                     {
                         method: "POST",
                         headers: {

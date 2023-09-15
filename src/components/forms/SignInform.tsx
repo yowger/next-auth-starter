@@ -21,7 +21,7 @@ import type { userFormLogin } from "@/schemas/userSchema"
 
 const callbackUrl = "/"
 
-export default function LoginForm() {
+export default function SignInForm() {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
 
@@ -53,7 +53,7 @@ export default function LoginForm() {
 
     return (
         <Form {...form}>
-            <h1 className="mb-5 text-xl">Login</h1>
+            <h1 className="mb-5 text-xl">Sign in</h1>
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -87,8 +87,8 @@ export default function LoginForm() {
                 </Button>
                 <p>
                     Already have an account{" "}
-                    <Link href="/login" className="text-blue-800">
-                        Register
+                    <Link href="/signin" className="text-blue-800">
+                        Sign Up
                     </Link>
                 </p>
             </form>

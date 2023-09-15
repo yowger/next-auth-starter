@@ -1,10 +1,10 @@
-import LoginForm from "@/components/forms/LoginForm"
+import SignInForm from "@/components/forms/SignInform"
 
 export default function Login() {
     return (
         <>
             <div className="max-w-md w-full p-4">
-                <LoginForm />
+                <SignInForm />
             </div>
         </>
     )
