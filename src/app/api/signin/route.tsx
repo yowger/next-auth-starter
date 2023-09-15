@@ -18,11 +18,17 @@ export async function POST(request: Request) {
             },
         })
 
-        if (!user || !(await compare(password, user.password))) {
+        if (user && (await compare(password, user.password))) {
+            const { password, ...userWithoutPassword } = user
+
+            const result = {
+                ...userWithoutPassword,
+            }
+
+            return NextResponse.json(result)
+        } else {
             return NextResponse.json(null)
         }
-
-        return NextResponse.json({ user })
     } catch (error) {
         const zodErrorResponse = zodCustomError(
             error,
