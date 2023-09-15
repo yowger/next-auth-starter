@@ -1,4 +1,4 @@
-**Next.js Authorization Starter Kit**
+# Next.js Authorization Starter Kit
 
 This project is a Next.js authentication system developed using modern web technologies, including Next.js, TypeScript, and PostgreSQL with Prisma. It aims to provide secure and reliable user authentication features for web applications.
 
