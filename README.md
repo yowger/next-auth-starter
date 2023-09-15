@@ -2,7 +2,13 @@
 
 This project is a Next.js authentication system developed using modern web technologies, including Next.js, TypeScript, and PostgreSQL with Prisma. It aims to provide secure and reliable user authentication features for web applications.
 
-## Technologies Used: Next.js, TypeScript, PostgreSQL with Prisma, Next-Auth, Zod
+### Technologies Used
+
+-   **Next.js**
+-   **TypeScript**
+-   **PostgreSQL with Prisma**
+-   **Next-Auth**
+-   **Zod**
 
 ### Key Features
 
@@ -31,12 +37,6 @@ This project is a Next.js authentication system developed using modern web techn
 ### GET /api/users/:id
 
 Get user information by their unique ID.
-
-**Parameters**
-
-| Name | Required |  Type  | Description                        |
-| ---- | :------: | :----: | ---------------------------------- |
-| `id` | required | number | The unique identifier of the user. |
 
 **Responses**
 
