@@ -9,8 +9,8 @@ export async function POST(request: Request) {
     try {
         const body: UserRegister = await request.json()
 
-        const result = userRegisterSchema.parse(body)
-        const { name, email, password } = result
+        const parsedBody = userRegisterSchema.parse(body)
+        const { name, email, password } = parsedBody
 
         const emailExist = await prisma.user.findUnique({
             where: {
@@ -39,7 +39,10 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ user: userWithoutPassword }, { status: 201 })
     } catch (error) {
-        const zodErrorResponse = zodCustomError(error, "Registration failed")
+        const zodErrorResponse = zodCustomError(
+            error,
+            "Registration failed: invalid Data"
+        )
         if (zodErrorResponse) {
             return NextResponse.json(zodErrorResponse, { status: 422 })
         }

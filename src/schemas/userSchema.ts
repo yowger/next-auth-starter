@@ -8,7 +8,8 @@ const emailSchema = z
     .string()
     .min(1, "Email is required")
     .email("Invalid email")
-const passwordSchema = z
+const passwordRequiredSchema = z.string().min(1, "Password is required")
+const strongPasswordSchema = z
     .string()
     .min(5, "Password must be at least 5 characters long")
     .max(50, "Password cannot exceed 50 characters")
@@ -26,16 +27,16 @@ const userSchema = z.object({
 
 export const userFormLoginSchema = z.object({
     email: emailSchema,
-    password: passwordSchema,
+    password: passwordRequiredSchema,
 })
 
 export const userRegisterSchema = userSchema.extend({
-    password: passwordSchema,
+    password: strongPasswordSchema,
 })
 
 export const userFormRegisterSchema = userSchema
     .extend({
-        password: passwordSchema,
+        password: strongPasswordSchema,
         confirmPassword: confirmPasswordSchema,
     })
     .refine((data) => data.password === data.confirmPassword, {
@@ -45,5 +46,7 @@ export const userFormRegisterSchema = userSchema
 
 export const userWithIdSchema = userSchema.merge(hasUserIdSchema)
 
+export type userFormLogin = z.infer<typeof userFormLoginSchema>
+export type userFormRegister = z.infer<typeof userFormRegisterSchema>
 export type userWithId = z.infer<typeof userWithIdSchema>
 export type UserRegister = z.infer<typeof userRegisterSchema>

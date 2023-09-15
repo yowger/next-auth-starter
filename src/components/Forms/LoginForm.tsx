@@ -1,41 +1,54 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
+import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import { userFormLoginSchema } from "@/schemas/userSchema"
+import type { userFormLogin } from "@/schemas/userSchema"
 
-/*
-    Todo: make schema file
-*/
-
-const formSchema = z.object({
-    email: z.string().min(1, "Email is required").email("Invalid email"),
-    password: z
-        .string()
-        .min(5, "Password must be at least 5 characters long")
-        .max(50, "Password cannot exceed 50 characters")
-        .regex(/[A-Z]/, "Password must contain at least one uppercase letter"),
-})
+const callbackUrl = "/"
 
 export default function LoginForm() {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const router = useRouter()
+    const [loading, setLoading] = useState(false)
+
+    const form = useForm<userFormLogin>({
+        resolver: zodResolver(userFormLoginSchema),
     })
 
-    const onSubmit = () => {
-        console.log("form submitted")
+    const onSubmit = async (data: userFormLogin) => {
+        setLoading(true)
+        const { email, password } = data
+
+        const signInResult = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+        })
+
+        setLoading(false)
+
+        if (!signInResult?.error) {
+            router.push(callbackUrl)
+        } else {
+            form.setError("password", {
+                type: "manual",
+                message: "Invalid email or password",
+            })
+        }
     }
 
     return (
@@ -69,7 +82,9 @@ export default function LoginForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Sign in</Button>
+                <Button disabled={loading} type="submit">
+                    {loading ? "Loading..." : "Sign in"}
+                </Button>
                 <p>
                     Already have an account{" "}
                     <Link href="/login" className="text-blue-800">
