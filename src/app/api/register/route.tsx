@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma"
 import bcrypt from "bcrypt"
 import { z } from "zod"
 import { UserRegister, userRegisterSchema } from "@/schemas/userSchema"
+import { zodCustomError } from "@/lib/zodCustomError"
 
 export async function POST(request: Request) {
     try {
@@ -38,21 +39,12 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ user: userWithoutPassword }, { status: 201 })
     } catch (error) {
-        let errorInstance = error
-
-        if (errorInstance instanceof z.ZodError) {
-            errorInstance = errorInstance.issues.map((error) => ({
-                path: error.path[0],
-                message: error.message,
-            }))
-
-            return NextResponse.json(
-                { message: "Failed to register", error: errorInstance },
-                { status: 422 }
-            )
+        const zodErrorResponse = zodCustomError(error, "Registration failed")
+        if (zodErrorResponse) {
+            return NextResponse.json(zodErrorResponse, { status: 422 })
         }
 
-        console.log("Registration error: ", errorInstance)
+        console.log("Registration error: ", error)
 
         return NextResponse.json(
             { message: "Registration Error" },
