@@ -26,6 +26,7 @@ export function verifyJwt(token: string): JwtPayload | null {
         return decoded
     } catch (error) {
         console.error("Error verifying JWT:", error)
+
         return null
     }
 }

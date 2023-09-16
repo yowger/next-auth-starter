@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
@@ -19,10 +19,10 @@ import {
 import { userFormLoginSchema } from "@/schemas/userSchema"
 import type { userFormLogin } from "@/schemas/userSchema"
 
-const callbackUrl = "/"
-
 export default function SignInForm() {
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const callbackUrl = searchParams.get("callbackUrl") || "/"
     const [loading, setLoading] = useState(false)
 
     const form = useForm<userFormLogin>({

@@ -23,7 +23,7 @@ export default function Navbar() {
                 <div className="flex gap-3">
                     {session?.user?.name ? (
                         <>
-                            <p>{session.user.name}</p>
+                            <Link href="/profile">{session.user.name}</Link>
                             <button onClick={handleSignOut}>Log out</button>
                         </>
                     ) : (

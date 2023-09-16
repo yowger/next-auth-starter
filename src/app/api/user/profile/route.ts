@@ -20,11 +20,11 @@ export async function GET(request: Request) {
 
         const decodedUser = decodeJwt(userAccessToken)
 
-        console.log("decodedUser: ", decodedUser)
+        const userId = decodedUser?.id
 
         const user = await prisma.user.findUnique({
             where: {
-                id: 17,
+                id: userId,
             },
             select: {
                 id: true,

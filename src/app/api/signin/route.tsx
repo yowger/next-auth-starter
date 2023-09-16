@@ -18,6 +18,7 @@ export async function POST(request: Request) {
                 email,
             },
             select: {
+                id: true,
                 name: true,
                 email: true,
                 password: true,
