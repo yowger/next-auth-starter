@@ -48,8 +48,10 @@ export const authOptions: AuthOptions = {
         async jwt({ user, token }) {
             return { ...user, ...token }
         },
-
         async session({ session, token }) {
+            const { iat, exp, jti, sub, ...userWithoutClaims } = token as any
+            session.user = userWithoutClaims
+
             return session
         },
     },

@@ -4,7 +4,9 @@ import Link from "next/link"
 import { signOut, useSession } from "next-auth/react"
 
 export default function Navbar() {
-    const { data } = useSession()
+    const { data: session } = useSession()
+
+    console.log(session?.user)
 
     const handleSignOut = () => {
         signOut({
@@ -19,9 +21,9 @@ export default function Navbar() {
                 <Link href="/">Home</Link>
 
                 <div className="flex gap-3">
-                    {data?.user && data.user.name ? (
+                    {session?.user?.name ? (
                         <>
-                            <p>{data.user.name}</p>
+                            <p>{session.user.name}</p>
                             <button onClick={handleSignOut}>Log out</button>
                         </>
                     ) : (

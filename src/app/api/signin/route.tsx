@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma"
 import { zodCustomError } from "@/lib/zodCustomError"
 import { userFormLoginSchema } from "@/schemas/userSchema"
 import type { userFormLogin } from "@/schemas/userSchema"
+import { signJwtAccessToken } from "@/lib/jwt"
 
 export async function POST(request: Request) {
     try {
@@ -16,13 +17,21 @@ export async function POST(request: Request) {
             where: {
                 email,
             },
+            select: {
+                name: true,
+                email: true,
+                password: true,
+            },
         })
 
         if (user && (await compare(password, user.password))) {
             const { password, ...userWithoutPassword } = user
 
+            const accessToken = signJwtAccessToken(userWithoutPassword)
+
             const result = {
                 ...userWithoutPassword,
+                accessToken,
             }
 
             return NextResponse.json(result)

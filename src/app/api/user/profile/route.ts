@@ -1,23 +1,30 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { userWithIdSchema } from "@/schemas/userSchema"
-import { zodCustomError } from "@/lib/zodCustomError"
-import { verifyJwt } from "@/lib/jwt"
+import { decodeJwt, verifyJwt } from "@/lib/jwt"
 
-type Props = {
-    params: {
-        id: number
-    }
-}
-
-// todo, add only admins can access this api 
-
-export async function GET(request: Request, { params: { id } }: Props) {
-
+export async function GET(request: Request) {
     try {
+        const userAccessToken = request.headers.get("authorization")
+
+        if (!userAccessToken || !verifyJwt(userAccessToken)) {
+            return new Response(
+                JSON.stringify({
+                    error: "unauthorized",
+                }),
+                {
+                    status: 401,
+                }
+            )
+        }
+
+        const decodedUser = decodeJwt(userAccessToken)
+
+        console.log("decodedUser: ", decodedUser)
+
         const user = await prisma.user.findUnique({
             where: {
-                id: +id,
+                id: 17,
             },
             select: {
                 id: true,
@@ -37,15 +44,10 @@ export async function GET(request: Request, { params: { id } }: Props) {
 
         return NextResponse.json({ user: parsedUser })
     } catch (error) {
-        const zodErrorResponse = zodCustomError(error, "Registration failed")
-        if (zodErrorResponse) {
-            return NextResponse.json(zodErrorResponse, { status: 422 })
-        }
-
-        console.log("Failed to fetch user: ", error)
+        console.log("Failed to get user profile: ", error)
 
         return NextResponse.json(
-            { message: "Failed to fetch user:" },
+            { message: "Failed to get user profile:" },
             { status: 500 }
         )
     }
