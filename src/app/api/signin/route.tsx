@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server"
+import { cookies } from "next/headers"
 import { compare } from "bcrypt"
 import prisma from "@/lib/prisma"
 import { zodCustomError } from "@/lib/zodCustomError"
 import { userFormLoginSchema } from "@/schemas/userSchema"
 import type { userFormLogin } from "@/schemas/userSchema"
-import { signJwtAccessToken } from "@/lib/jwt"
+import { signJwtToken } from "@/lib/jwt"
 
 export async function POST(request: Request) {
     try {
@@ -28,7 +29,28 @@ export async function POST(request: Request) {
         if (user && (await compare(password, user.password))) {
             const { password, ...userWithoutPassword } = user
 
-            const accessToken = signJwtAccessToken(userWithoutPassword)
+            const accessToken = signJwtToken(userWithoutPassword, {
+                expiresIn: "20s",
+            }) //20s test
+
+            // test
+            const refreshToken = signJwtToken(
+                { userId: user.id },
+                { expiresIn: "1d" }
+            )
+
+            // might move it to database in the future
+            const oneDay = 24 * 60 * 60 * 1000
+            cookies().set("refreshToken", refreshToken, {
+                expires: Date.now() - oneDay,
+            })
+
+            /*
+                httpOnly: true,
+                secure: true,
+                sameSite: "None",
+                maxAge: oneDay,
+            */
 
             const result = {
                 ...userWithoutPassword,

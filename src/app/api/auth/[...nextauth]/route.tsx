@@ -39,13 +39,22 @@ export const authOptions: AuthOptions = {
             },
         }),
     ],
+    pages: {
+        signIn: "/signin",
+        // todo make signout page
+        // signOut: "/signout"
+    },
     secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: "jwt",
         maxAge: 30 * 24 * 60 * 60,
     },
     callbacks: {
-        async jwt({ user, token }) {
+        async jwt({ user, token, trigger, session }) {
+            // if(trigger === "update") {
+            //     return {...token, session.user}
+            // }
+
             return { ...user, ...token }
         },
         async session({ session, token }) {
